@@ -1,0 +1,13 @@
+{
+  "name": "workflows",
+  "version": "0.0.1",
+  "description": "learn workflow using gulp",
+  "main": "index.js",
+ 
+  "repository": {
+    "type": "git",
+    "url": "?.git"
+  },
+  "author": "Xiuli Gong"
+  
+}
