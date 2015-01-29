@@ -22,6 +22,8 @@ var gulp = require('gulp'),
      sassFileSource = ['components/sass/*.scss'],
      devCssDest = 'builds/development/css';
 
+var htmlSource = ['builds/development/*.html'];
+var jasonSource = ['builds/development/js/*.json'];
 
 
 gulp.task('log', function(){
@@ -59,6 +61,7 @@ gulp.task('compass', function(){
 	 .pipe(connect.reload())
 
 });
+
 gulp.task('connect', function(){
 	connect.server({
        root: 'builds/development/',
@@ -67,10 +70,22 @@ gulp.task('connect', function(){
 
 });
 
+gulp.task('html', function(){
+     gulp.src(htmlSource)
+     .pipe(connect.reload())
+});
+
+gulp.task('json', function(){
+     gulp.src(jasonSource)
+     .pipe(connect.reload())
+});
+
 gulp.task('watch', function(){
     gulp.watch(coffeeSources, ['coffee']);
     gulp.watch(jsSources, ['js']);
-    gulp.watch(sassFileSource, ['compass'])
+    gulp.watch(sassFileSource, ['compass']);
+    gulp.watch(htmlSource, ['html']);
+     gulp.watch(jasonSource, ['json']);
 });
-gulp.task('default', ['coffee', 'js', 'compass', 'connect', 'watch']);
+gulp.task('default', ['coffee', 'js', 'compass', 'html', 'json', 'connect', 'watch']);
 
