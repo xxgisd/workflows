@@ -3,11 +3,13 @@
   "version": "0.0.1",
   "description": "learn workflow using gulp",
   "main": "index.js",
- 
   "repository": {
     "type": "git",
     "url": "?.git"
   },
-  "author": "Xiuli Gong"
-  
+  "author": "Xiuli Gong",
+  "devDependencies": {
+    "gulp": "~3.8.10",
+    "gulp-util": "~3.0.2"
+  }
 }
