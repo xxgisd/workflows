@@ -1,7 +1,9 @@
 var gulp = require('gulp'),
     gutil = require('gulp-util'),
     coffee = require('gulp-coffee'),
-    concat = require('gulp-concat');
+    concat = require('gulp-concat'),
+    browserify = require('gulp-browserify'),
+    compass = require('gulp-compass');
 
  var coffeeSources = ['components/coffee/tagline.coffee'],
      destJsDir = 'components/scripts';
@@ -14,6 +16,11 @@ var gulp = require('gulp'),
  ];
 
  var jsDevDest = 'builds/development/js';
+
+ var sassMainSource = ['components/sass/style.scss'],
+     sassFileSource = ['components/sass/*.scss'],
+     devCssDest = 'builds/development/css';
+
 
 
 gulp.task('log', function(){
@@ -28,10 +35,25 @@ gulp.task('coffee', function(){
 	.pipe(gulp.dest(destJsDir))
 });
 
-gulp.task('js', function(){
+gulp.task('js',  function(){
 	gulp.src(jsSources)
 	    .pipe(concat('script.js'))
+	    .pipe(browserify())
 	    .pipe(gulp.dest(jsDevDest))
 
-    
+ });
+
+gulp.task('css', function(){
+	gulp.src(sassMainSource)
+	 .pipe(compass({
+	 	sass: 'components/sass',
+	 	css:  devCssDest,
+	 	images: 'builds/development/images',
+	 	// require: ['susy'],
+	 	style: 'expanded'
+	 })
+	    .on('error', gutil.log))
+	 .pipe(gulp.dest(devCssDest))
+
 });
+gulp.task('default', ['coffee', 'js', 'css']);
