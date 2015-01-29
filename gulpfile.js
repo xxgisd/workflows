@@ -6,24 +6,51 @@ var gulp = require('gulp'),
     compass = require('gulp-compass'),
     connect = require('gulp-connect');
 
- var coffeeSources = ['components/coffee/tagline.coffee'],
-     destJsDir = 'components/scripts';
+var env,
+     coffeeSources,
+     destJsDir,
+      jsSources,
+       jsDevDest,
+       sassMainSource,
+       sassFileSource,
+       devCssDest,
+       htmlSource,
+       jasonSource, 
+       outputDir, 
+       sassStyle;
 
- var jsSources = [
+// command line NODE_ENV=production
+
+ env = process.env.NODE_ENV || 'development';
+
+ if(env === 'development'){
+     outputDir = 'builds/development/';
+     sassStyle = 'expanded';
+ }else{
+     outputDir = 'builds/production/';
+     sassStyle = 'compressed';
+ }
+
+
+
+  coffeeSources = ['components/coffee/tagline.coffee'];
+  destJsDir = 'components/scripts';
+
+ jsSources = [
      'components/scripts/rclick.js',
      'components/scripts/pixgrid.js',
      'components/scripts/tagline.js',
      'components/scripts/template.js'
  ];
 
- var jsDevDest = 'builds/development/js';
+  jsDevDest = outputDir + 'js';
 
- var sassMainSource = ['components/sass/style.scss'],
-     sassFileSource = ['components/sass/*.scss'],
-     devCssDest = 'builds/development/css';
+    sassMainSource = ['components/sass/style.scss'];
+     sassFileSource = ['components/sass/*.scss'];
+     devCssDest = outputDir + '/css';
 
-var htmlSource = ['builds/development/*.html'];
-var jasonSource = ['builds/development/js/*.json'];
+ htmlSource = [outputDir + '*.html'];
+ jasonSource = [outputDir + 'js/*.json'];
 
 
 gulp.task('log', function(){
@@ -52,9 +79,9 @@ gulp.task('compass', function(){
 	 .pipe(compass({
 	 	sass: 'components/sass',
 	 	css:  devCssDest,
-	 	images: 'builds/development/images',
+	 	images: outputDir + 'images',
 	 	// require: ['susy'],
-	 	style: 'expanded'
+	 	style: sassStyle
 	 })
 	    .on('error', gutil.log))
 	 .pipe(gulp.dest(devCssDest))
@@ -64,7 +91,7 @@ gulp.task('compass', function(){
 
 gulp.task('connect', function(){
 	connect.server({
-       root: 'builds/development/',
+       root: outputDir + '',
        livereload: true
 	});
 
